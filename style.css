@@ -1,0 +1,107 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #333; /* Màu nền tối hơn */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Đảm bảo chiếm toàn bộ chiều cao */
+    overflow: hidden; /* Tránh scroll không mong muốn */
+}
+
+#game-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 800px; /* Giới hạn chiều rộng tối đa trên desktop */
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+#game-info {
+    margin-bottom: 10px;
+    font-size: 1em;
+    text-align: center;
+    width: 100%;
+}
+
+#gameCanvas {
+    border: 1px solid white;
+    background-color: #87CEEB; /* Màu nền trời ban đầu */
+    display: block;
+    width: 100%; /* Canvas sẽ co giãn theo wrapper */
+    height: auto; /* Chiều cao tự động theo tỷ lệ */
+    max-height: 60vh; /* Giới hạn chiều cao để dành chỗ cho controls */
+    aspect-ratio: 4 / 3; /* Giữ tỷ lệ khung hình (tùy chỉnh) */
+}
+
+#controls {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap; /* Cho phép xuống dòng trên màn hình nhỏ */
+    justify-content: center; /* Căn giữa các nhóm control */
+    gap: 10px; /* Khoảng cách giữa các nhóm */
+    width: 100%;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Khoảng cách giữa các phần tử trong nhóm */
+    background-color: #555;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+#controls label {
+    font-weight: bold;
+}
+
+#controls button {
+    padding: 8px 12px;
+    font-size: 1em;
+    cursor: pointer;
+    background-color: #ddd;
+    color: #333;
+    border: none;
+    border-radius: 3px;
+}
+
+#controls button:active { /* Hiệu ứng khi nhấn nút */
+    background-color: #bbb;
+}
+
+#controls span {
+    min-width: 30px; /* Đảm bảo độ rộng tối thiểu cho số hiển thị */
+    text-align: center;
+    font-weight: bold;
+}
+
+#btn-fire {
+    background-color: #ff4d4d; /* Màu nổi bật cho nút bắn */
+    color: white;
+    font-weight: bold;
+}
+#btn-fire:active {
+    background-color: #cc0000;
+}
+
+/* Responsive cho màn hình nhỏ hơn */
+@media (max-width: 600px) {
+    #game-info {
+        font-size: 0.9em;
+    }
+    #controls {
+        gap: 5px; /* Giảm khoảng cách */
+    }
+    .control-group {
+        padding: 5px;
+    }
+    #controls button {
+        padding: 6px 8px;
+        font-size: 0.9em;
+    }
+}

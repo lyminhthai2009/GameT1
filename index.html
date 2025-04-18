@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Game Xe Tăng 30/4</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-wrapper">
+        <div id="game-info">
+            <span id="player-turn">Lượt của: Bạn</span> |
+            <span>Điểm: <span id="score">0</span></span> |
+            <span>Level: <span id="level">1</span></span>
+            <span id="wind-info"> | Gió: <span id="wind-speed">0</span> (<span id="wind-direction">-></span>)</span>
+        </div>
+
+        <canvas id="gameCanvas"></canvas>
+
+        <div id="controls">
+            <div class="control-group">
+                <button id="btn-move-left">Lùi</button>
+                <button id="btn-move-right">Tiến</button>
+            </div>
+            <div class="control-group">
+                <label>Góc:</label>
+                <button id="btn-angle-down">↓</button>
+                <span id="angle-display">45</span>°
+                <button id="btn-angle-up">↑</button>
+            </div>
+            <div class="control-group">
+                <label>Lực:</label>
+                <button id="btn-power-down">-</button>
+                <span id="power-display">50</span>
+                <button id="btn-power-up">+</button>
+            </div>
+             <div class="control-group">
+                 <button id="btn-fire">Bắn!</button>
+             </div>
+        </div>
+         <div id="debug-info" style="font-size: 0.8em; margin-top: 5px;"></div> <!-- Tùy chọn: Hiển thị thông tin gỡ lỗi -->
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
