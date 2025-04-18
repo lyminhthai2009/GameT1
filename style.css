@@ -1,107 +1,282 @@
-body {
-    font-family: sans-serif;
+/* === GLOBAL RESET & FONT === */
+* {
     margin: 0;
     padding: 0;
-    background-color: #333; /* Màu nền tối hơn */
-    color: white;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font dễ đọc */
+    background-color: #e0f7fa; /* Màu nền sáng, nhẹ nhàng */
+    color: #333; /* Màu chữ chính tối */
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh; /* Đảm bảo chiếm toàn bộ chiều cao */
-    overflow: hidden; /* Tránh scroll không mong muốn */
+    min-height: 100vh;
+    overflow: hidden;
+    padding: 10px;
+    line-height: 1.5;
 }
 
+/* === GAME WRAPPER === */
 #game-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 800px; /* Giới hạn chiều rộng tối đa trên desktop */
-    padding: 10px;
-    box-sizing: border-box;
+    max-width: 950px; /* Rộng hơn chút */
+    background-color: rgba(255, 255, 255, 0.8); /* Nền trắng mờ */
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden; /* Để overlay hoạt động đúng */
 }
 
+/* === GAME INFO BAR === */
 #game-info {
-    margin-bottom: 10px;
-    font-size: 1em;
-    text-align: center;
     width: 100%;
-}
-
-#gameCanvas {
-    border: 1px solid white;
-    background-color: #87CEEB; /* Màu nền trời ban đầu */
-    display: block;
-    width: 100%; /* Canvas sẽ co giãn theo wrapper */
-    height: auto; /* Chiều cao tự động theo tỷ lệ */
-    max-height: 60vh; /* Giới hạn chiều cao để dành chỗ cho controls */
-    aspect-ratio: 4 / 3; /* Giữ tỷ lệ khung hình (tùy chỉnh) */
-}
-
-#controls {
-    margin-top: 15px;
+    background-color: rgba(0, 150, 136, 0.8); /* Màu xanh teal làm nền */
+    color: white;
+    padding: 10px 15px;
+    border-radius: 10px 10px 0 0; /* Bo góc trên */
+    margin-bottom: 15px;
     display: flex;
-    flex-wrap: wrap; /* Cho phép xuống dòng trên màn hình nhỏ */
-    justify-content: center; /* Căn giữa các nhóm control */
-    gap: 10px; /* Khoảng cách giữa các nhóm */
+    flex-wrap: wrap;
+    justify-content: space-around; /* Phân bố đều */
+    align-items: center;
+    gap: 10px 20px;
+    font-size: 0.9em;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#game-info span { /* Các mục thông tin */
+    white-space: nowrap; /* Tránh xuống dòng giữa chừng */
+}
+
+#game-info span > span { /* Giá trị số (ví dụ: điểm, level) */
+    font-weight: bold;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 4px;
+}
+
+/* === CANVAS === */
+#gameCanvas {
+    border: 2px solid #00796b; /* Viền đậm hơn, màu teal đậm */
+    display: block;
     width: 100%;
+    height: auto; /* Để JS điều chỉnh hoặc giữ tỷ lệ */
+    max-height: 70vh; /* Giới hạn chiều cao */
+    border-radius: 5px; /* Bo góc nhẹ */
+    background-color: #b3e5fc; /* Màu nền trời mặc định sáng hơn */
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1); /* Bóng đổ nhẹ bên trong */
+    /* Có thể thêm image-rendering nếu dùng pixel art */
+}
+
+/* === CONTROLS AREA === */
+#controls {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px; /* Khoảng cách lớn hơn giữa các nhóm */
+    width: 100%;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.7); /* Nền sáng hơn */
+    border-radius: 0 0 10px 10px; /* Bo góc dưới */
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .control-group {
     display: flex;
     align-items: center;
-    gap: 5px; /* Khoảng cách giữa các phần tử trong nhóm */
-    background-color: #555;
-    padding: 8px;
-    border-radius: 5px;
+    gap: 8px; /* Khoảng cách trong nhóm */
+    background-color: transparent; /* Bỏ nền riêng của group */
+    padding: 5px; /* Giảm padding group */
+    border-radius: 8px;
 }
 
 #controls label {
-    font-weight: bold;
+    font-weight: 600; /* Đậm vừa */
+    color: #00796b; /* Màu teal đậm */
+    font-size: 0.95em;
 }
 
-#controls button {
-    padding: 8px 12px;
-    font-size: 1em;
-    cursor: pointer;
-    background-color: #ddd;
-    color: #333;
-    border: none;
-    border-radius: 3px;
-}
-
-#controls button:active { /* Hiệu ứng khi nhấn nút */
-    background-color: #bbb;
-}
-
-#controls span {
-    min-width: 30px; /* Đảm bảo độ rộng tối thiểu cho số hiển thị */
+#controls span { /* Hiển thị số (góc, lực, đạn) */
+    min-width: 35px;
     text-align: center;
     font-weight: bold;
+    background-color: #e0f2f1; /* Màu nền rất nhạt */
+    color: #004d40; /* Màu chữ đậm */
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #b2dfdb; /* Viền nhạt */
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
 }
 
-#btn-fire {
-    background-color: #ff4d4d; /* Màu nổi bật cho nút bắn */
-    color: white;
+/* === BUTTON STYLES (Thiết kế lại) === */
+#controls button {
+    /* Kiểu dáng */
+    padding: 8px 14px;
+    font-size: 1em;
     font-weight: bold;
-}
-#btn-fire:active {
-    background-color: #cc0000;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    color: white; /* Chữ trắng */
+    text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+    touch-action: manipulation;
+
+    /* Màu & Hiệu ứng */
+    background-color: #009688; /* Màu Teal chính */
+    box-shadow: 0 3px 0 #00695c, /* Giả 3D bằng border dưới đậm */
+                0 4px 6px rgba(0,0,0,0.15);
+    transition: all 0.08s ease-in-out;
 }
 
-/* Responsive cho màn hình nhỏ hơn */
-@media (max-width: 600px) {
-    #game-info {
-        font-size: 0.9em;
-    }
-    #controls {
-        gap: 5px; /* Giảm khoảng cách */
-    }
-    .control-group {
-        padding: 5px;
-    }
-    #controls button {
-        padding: 6px 8px;
-        font-size: 0.9em;
-    }
+#controls button:hover:not(:disabled) {
+    background-color: #00a99d; /* Sáng hơn khi hover */
+    box-shadow: 0 3px 0 #00796b, 0 5px 8px rgba(0,0,0,0.2);
+    transform: translateY(-1px); /* Nâng nhẹ */
 }
+
+#controls button:active:not(:disabled) {
+    background-color: #00796b; /* Đậm hơn khi nhấn */
+    box-shadow: 0 1px 0 #004d40, /* Đổi bóng giả 3D */
+                inset 0 1px 3px rgba(0,0,0,0.2);
+    transform: translateY(2px); /* Lún xuống rõ hơn */
+    transition-duration: 0.05s;
+}
+
+#controls button:disabled {
+    background-color: #90a4ae; /* Màu xám xanh khi disable */
+    color: #cfd8dc;
+    cursor: not-allowed;
+    box-shadow: 0 3px 0 #607d8b;
+    text-shadow: none;
+    transform: translateY(0);
+    opacity: 0.8;
+}
+
+/* Nút Bắn Đặc Biệt */
+#btn-fire {
+    background-color: #ff5722; /* Màu cam cháy */
+    box-shadow: 0 3px 0 #e64a19, 0 4px 6px rgba(0,0,0,0.15);
+    padding: 10px 20px; /* To hơn */
+    font-size: 1.1em;
+}
+#btn-fire:hover:not(:disabled) {
+    background-color: #ff6f43;
+    box-shadow: 0 3px 0 #f55a2a, 0 5px 8px rgba(0,0,0,0.2);
+    transform: translateY(-1px);
+}
+#btn-fire:active:not(:disabled) {
+    background-color: #e64a19;
+    box-shadow: 0 1px 0 #bf360c, inset 0 1px 3px rgba(0,0,0,0.3);
+    transform: translateY(2px);
+}
+#btn-fire:disabled {
+    background-color: #ff8a65;
+    box-shadow: 0 3px 0 #ff7043;
+    color: #ffccbc;
+    opacity: 0.7;
+}
+
+/* Nút điều chỉnh nhỏ (góc, lực, đạn) */
+#btn-angle-down, #btn-angle-up,
+#btn-power-down, #btn-power-up,
+#btn-ammo-prev, #btn-ammo-next {
+    padding: 6px 10px; /* Nhỏ hơn nút thường */
+    font-size: 0.9em;
+    background-color: #4db6ac; /* Màu teal nhạt hơn */
+    box-shadow: 0 2px 0 #26a69a, 0 3px 4px rgba(0,0,0,0.1);
+}
+#btn-angle-down:hover:not(:disabled), #btn-angle-up:hover:not(:disabled),
+#btn-power-down:hover:not(:disabled), #btn-power-up:hover:not(:disabled),
+#btn-ammo-prev:hover:not(:disabled), #btn-ammo-next:hover:not(:disabled) {
+     background-color: #64c8bc;
+     box-shadow: 0 2px 0 #3dbdae, 0 4px 6px rgba(0,0,0,0.15);
+     transform: translateY(-1px);
+}
+#btn-angle-down:active:not(:disabled), #btn-angle-up:active:not(:disabled),
+#btn-power-down:active:not(:disabled), #btn-power-up:active:not(:disabled),
+#btn-ammo-prev:active:not(:disabled), #btn-ammo-next:active:not(:disabled) {
+     background-color: #26a69a;
+     box-shadow: 0 1px 0 #00897b, inset 0 1px 2px rgba(0,0,0,0.2);
+     transform: translateY(1px);
+}
+
+/* === DEBUG INFO === */
+#debug-info {
+    margin-top: 10px;
+    font-size: 0.75em;
+    color: #757575; /* Màu xám */
+    width: 100%;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+/* === GAME OVER OVERLAY === */
+#game-over-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 80, 74, 0.85); /* Màu nền đậm hơn, hơi trong */
+    color: white;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 10;
+    border-radius: 15px; /* Khớp với wrapper */
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+}
+
+#game-over-message {
+    font-size: 2.8em;
+    margin-bottom: 25px;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+#restart-message {
+    font-size: 1.3em;
+    opacity: 0.9;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    body { padding: 5px; }
+    #game-wrapper { padding: 15px; }
+    #game-info { font-size: 0.8em; gap: 5px 10px; padding: 8px 10px; }
+    #controls { margin-top: 15px; padding: 10px; gap: 8px; }
+    .control-group { gap: 5px; }
+    #controls button { padding: 6px 10px; font-size: 0.9em; }
+    #btn-fire { padding: 8px 15px; font-size: 1em; }
+    #controls span { padding: 5px 8px; min-width: 30px; }
+    #game-over-message { font-size: 2em; }
+    #restart-message { font-size: 1.1em; }
+}
+
+@media (max-width: 480px) {
+    #game-wrapper { padding: 10px; border-radius: 10px; }
+    #game-info { flex-direction: column; align-items: flex-start; gap: 3px; } /* Chuyển thành cột trên mobile nhỏ */
+    #game-info span { width: 100%; text-align: left; } /* Căn trái cho dễ đọc */
+    #gameCanvas { border-width: 1px; }
+    #controls { flex-direction: column; align-items: stretch; } /* Controls thành cột */
+    .control-group { justify-content: space-between; } /* Căn đều trong group */
+    #controls button { flex-grow: 1; text-align: center; } /* Nút giãn ra */
+    #btn-fire { width: 100%; margin-top: 5px; }
+    #game-over-message { font-size: 1.6em; }
+    #restart-message { font-size: 1em; }
+               }
